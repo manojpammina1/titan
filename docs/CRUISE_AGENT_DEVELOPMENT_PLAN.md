@@ -1,7 +1,7 @@
 # Cruise Agent Development Plan
 
-Status: freeze candidate
-Owner: Manoj Pammina
+Status: frozen
+Owner: Candidate (Principal Engineer case study)
 Audience: RCG Principal Engineer take-home, Part 1 and Part 2
 Last updated: 2026-08-09
 

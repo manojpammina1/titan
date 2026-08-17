@@ -20,4 +20,4 @@ export function getLabel(model: string): string {
   return MODEL_RATES[model]?.label ?? model;
 }
 
-export const DISCLAIMER = 'Cost estimates use Anthropic list pricing (June 2026). your org's contract rates may be lower — pending confirmation from Finance.';
+export const DISCLAIMER = "Cost estimates use Anthropic list pricing (June 2026). Your org's contract rates may be lower — pending confirmation from Finance.";

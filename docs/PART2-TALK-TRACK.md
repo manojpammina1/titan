@@ -8,24 +8,28 @@ slide needs one sentence a Principal respects and one an EM can act on.
 
 ## Timing
 
-| # | Slide | Min | Cut first if long |
-|---|---|---|---|
-| 1 | Thesis and assumptions | 2 | no |
-| 2 | Why now | 2 | yes → 1 |
-| 3 | Tooling standard | 3 | no |
-| 4 | 30/60/90 | 3 | no |
-| 5 | SDLC control matrix | 3 | no |
-| 6 | Safety, SOX, IP — live demo | 4 | never |
-| 7 | Measurement | 3 | no |
-| 8 | Worked example: architecture | 3 | no |
-| 9 | Worked example: evaluate and operate | 2 | no |
-| 10 | Enablement and influence | 2 | yes → 1 |
-| 11 | Risks and kill criteria | 2 | no |
-| 12 | The ask | 1 | no |
+Every slide has one executable action behind it. Exact commands, expected
+output, and what to say while it runs: `docs/PART2-DEMO-MAP.md`.
 
-Two rules for delivery. Never read a slide aloud. When you are asked something
-you have not verified, say so and say how you would find out — the panel is
-scoring judgment, not recall.
+| # | Slide | Min | Cut first if long | Action on stage |
+|---|---|---|---|---|
+| 1 | Thesis and assumptions | 2 | no | `cruise_demo.py plan "<hero prompt>"` |
+| 2 | Why now | 2 | yes → 1 | `credential-scan.py --scan-stdin` blocks a paste |
+| 3 | Tooling standard | 3 | no | `titan-render.py` + `show-enforcement-matrix.py` |
+| 4 | 30/60/90 | 3 | no | `deploy-harness.sh` onboards a repo |
+| 5 | SDLC control matrix | 3 | no | `answer-cache.py` answers `?gov` at zero tokens |
+| 6 | Safety, SOX, IP — live demo | 4 | never | `demo/sox/run-demo.sh`, three acts |
+| 7 | Measurement | 3 | no | `npx vitest run` + the `false` flag + a real event |
+| 8 | Worked example: architecture | 3 | no | `compare`, `ask` — citation and injection stripped |
+| 9 | Worked example: evaluate and operate | 2 | no | `eval`, `--model off`, `hold`, `--concurrent 5` |
+| 10 | Enablement and influence | 2 | yes → 1 | `sox-evidence.py` fails this repo |
+| 11 | Risks and kill criteria | 2 | no | refusal + gate exit code |
+| 12 | The ask | 1 | no | none — recap what already ran |
+
+Three rules for delivery. Never read a slide aloud. Never type a command live —
+press up-arrow through pre-warmed history. When you are asked something you have
+not verified, say so and say how you would find out; the panel is scoring
+judgment, not recall.
 
 ---
 
@@ -276,6 +280,11 @@ annualize a two-week sample and call it savings."
 
 **Point:** A governed commerce orchestration layer, not a chatbot.
 
+**Demo:** `demo/cruise/cruise_demo.py` — `compare` shows deltas as subtraction
+on tool output, `ask "tell me about onboard credit"` strips an injected
+instruction out of retrieved content. A runnable slice against mock data, not
+the production build. Commands and expected output in `docs/PART2-DEMO-MAP.md`.
+
 **Say:** "The feature is an agentic cruise planning assistant. A guest says
 'seven nights in the Caribbean in March, family of four, balcony, under five
 thousand.' The model interprets that and explains trade-offs. It does not
@@ -308,12 +317,19 @@ with eval data, not before."
 **Point:** The eval suite is a merge gate, and the failure path is a product
 feature.
 
-**Say:** "Ten golden cases and seven red-team cases run in CI. The red-team set
+**Demo:** `cruise_demo.py eval` — 10 golden and 8 red-team cases, non-zero exit
+on failure. Then `plan --model off` for the outage path, the three-step `hold`
+sequence for the auth gates, and `hold --concurrent 5` on a two-cabin sailing.
+Mention that the suite caught a real defect during construction: seed fares made
+the hero request unsatisfiable and the run reported NO-GO.
+
+**Say:** "Ten golden cases and eight red-team cases run in CI. The red-team set
 is the interesting half: policy content that says 'ignore previous
 instructions', a guest asking for hidden discounts, a guest asking the
 assistant to complete payment, a guest asking for someone else's booking, an
 attempt to hold a cabin without logging in, a stale price that must revalidate
-before the hold, and two concurrent holds on the same cabin. Those are not
+before the hold, two concurrent holds on the same cabin, and a call to a tool
+that is not on the authorised list. Those are not
 prompt-engineering fixes; each one is a capability boundary or a deterministic
 check."
 

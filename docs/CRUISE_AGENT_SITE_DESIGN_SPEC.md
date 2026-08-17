@@ -1,7 +1,7 @@
 # Cruise Agent Site Design Spec
 
-Status: freeze candidate
-Owner: Manoj Pammina
+Status: frozen
+Owner: Candidate (Principal Engineer case study)
 Audience: Titan-governed development agents
 Last updated: 2026-08-09
 

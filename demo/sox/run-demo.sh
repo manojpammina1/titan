@@ -41,8 +41,11 @@ for f in "$HARNESS/hooks/credential-scan.py" \
 done
 command -v python >/dev/null 2>&1 || { echo "FAIL: 'python' not on PATH (the shipped pre-commit hook calls 'python')" >&2; exit 1; }
 
-WORK="$(mktemp -d "${SOX_DEMO_DIR:-${TMPDIR:-/tmp}}/sox-demo.XXXXXX")" || {
-  echo "FAIL: could not create a temp directory. Set SOX_DEMO_DIR to a writable path." >&2
+DEMO_PARENT="${SOX_DEMO_DIR:-${TMPDIR:-/tmp}}"
+mkdir -p "$DEMO_PARENT" 2>/dev/null
+WORK="$(mktemp -d "$DEMO_PARENT/sox-demo.XXXXXX")" || {
+  echo "FAIL: could not create a temp directory under '$DEMO_PARENT'." >&2
+  echo "      Set SOX_DEMO_DIR to a writable path that is NOT inside a git repository." >&2
   exit 1
 }
 cleanup() {

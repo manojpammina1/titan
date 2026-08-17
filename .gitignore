@@ -3,6 +3,8 @@ dist/
 dist-electron/
 release/
 .render/
+.tmp-render*/
+.claude/telemetry/
 __pycache__/
 *.pyc
 fixtures/titan.config.ds.json
