@@ -1,0 +1,49 @@
+{
+  "_description": "DEMO FIXTURE ONLY — fictional owners, illustrative globs. Mirrors the shape that titan-render.py generates from titan.config.json protected_paths[] so path-guard.py and sox-evidence.py can be demonstrated without touching a real config. Not deployed, not governance.",
+  "paths": [
+    {
+      "id": "revenue-relevant",
+      "globs": [
+        "services/pricing/**",
+        "services/tax/**",
+        "services/payment/**",
+        "services/booking/**",
+        "services/inventory/**"
+      ],
+      "severity": "CRITICAL",
+      "owners": ["Dana Reyes", "Owen Marsh"],
+      "why": "SOX-relevant: these modules feed revenue recognition. Changes require a ticket, an approver who is not the author, and a recorded escalation reference.",
+      "enforcement": {
+        "block_read": false,
+        "block_write": true,
+        "block_bash": false,
+        "block_grep": false,
+        "block_prompt": false,
+        "never_index": false,
+        "deny_in_settings": true,
+        "hard_stop": true,
+        "escalate_on_touch": true
+      },
+      "message": "Revenue-relevant module. Stop, contact the area owner, and record the approval reference in the PR before changing this path."
+    },
+    {
+      "id": "app-secrets",
+      "globs": ["**/config/*.secrets.json", "**/*.pem", "**/*.key"],
+      "severity": "CRITICAL",
+      "owners": ["Security Team"],
+      "why": "Credentials and TLS keys are never edited through an assistant — rotate them in the secret store.",
+      "enforcement": {
+        "block_read": true,
+        "block_write": true,
+        "block_bash": true,
+        "block_grep": true,
+        "block_prompt": true,
+        "never_index": true,
+        "deny_in_settings": true,
+        "hard_stop": true,
+        "escalate_on_touch": true
+      },
+      "message": "Secret material. Rotate in the secret store — do not commit."
+    }
+  ]
+}
