@@ -6,33 +6,33 @@
 <title>Part 2 — Agentic Development Strategy</title>
 <style>
   :root {
-    --bg: #0b1220; --card: #111827; --text: #f1f5f9; --muted: #94a3b8;
-    --accent: #3b82f6; --border: #1e293b;
+    --bg: #eef6fc; --card: #ffffff; --text: #0a3d5c; --muted: #64748b;
+    --accent: #0096c7; --border: #cbe8f5; --header: linear-gradient(90deg, #005f8c, #0096c7);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: var(--bg); color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; }
+  html, body { height: 100%; background: linear-gradient(135deg, #ffffff 0%, #eef6fc 55%, #e8f4fc 100%);
+    color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; }
   .deck { height: 100vh; width: 100vw; position: relative; }
   .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     padding: 32px 40px; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
   .slide.active { opacity: 1; pointer-events: auto; }
   .slide-inner { display: grid; grid-template-columns: 38% 62%; gap: 28px; width: min(1440px, 100%); height: min(820px, 92vh); }
   .copy { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px;
-    display: flex; flex-direction: column; justify-content: center; }
+    display: flex; flex-direction: column; justify-content: center; box-shadow: 0 8px 32px rgba(0,95,140,.08); }
   .num { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
-  h1 { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.2; margin-bottom: 20px; }
+  h1 { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.2; margin-bottom: 20px; color: #005f8c; }
   ul { list-style: none; }
   li { position: relative; padding-left: 18px; margin-bottom: 14px; font-size: clamp(14px, 1.35vw, 17px);
-    line-height: 1.45; color: #cbd5e1; }
+    line-height: 1.45; color: #334155; }
   li::before { content: ''; position: absolute; left: 0; top: .55em; width: 7px; height: 7px;
     border-radius: 50%; background: var(--accent); }
   .visuals { display: flex; flex-direction: column; gap: 12px; justify-content: center; min-height: 0; }
   .shot { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
   .shot img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;
-    border: 1px solid var(--border); box-shadow: 0 12px 40px rgba(0,0,0,.45); background: #0d1117; }
-  .hud { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: rgba(17,24,39,.92);
+    border: 1px solid var(--border); box-shadow: 0 8px 28px rgba(0,95,140,.12); background: #fff; }
+  .hud { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,.92);
     border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 13px; color: var(--muted);
-    display: flex; gap: 16px; align-items: center; z-index: 10; backdrop-filter: blur(8px); }
+    display: flex; gap: 16px; align-items: center; z-index: 10; backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
   .hud kbd { background: #1e293b; border-radius: 4px; padding: 2px 6px; color: #e2e8f0; font-size: 11px; }
   .title-card { position: fixed; top: 18px; left: 24px; font-size: 13px; color: var(--muted); z-index: 10; }
   @media (max-width: 960px) {

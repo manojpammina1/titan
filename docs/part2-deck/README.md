@@ -7,15 +7,20 @@ on slides** — speaker notes live separately.
 
 | File | Purpose |
 |---|---|
-| `index.html` | 12-slide browser presentation (← → navigate, F fullscreen) |
+| `Part2-Agentic-Development.pptx` | **PowerPoint deck** — light ocean theme, open in Keynote/PowerPoint |
+| `index.html` | Browser presentation (← → navigate, F fullscreen) |
 | `screenshots/` | PNG captures — terminal output + Titan dashboard mock |
 | `captures/` | Raw text output used to generate screenshots |
 | `build-deck.py` | Regenerate deck after demo or code changes |
 
 ## Open the deck
 
+**PowerPoint (recommended):**
 ```bash
-open docs/part2-deck/index.html
+open docs/part2-deck/Part2-Agentic-Development.pptx
+```
+
+**Browser:**
 # or
 python3 -m http.server 8765 --directory docs/part2-deck
 # then visit http://localhost:8765
@@ -26,12 +31,14 @@ python3 -m http.server 8765 --directory docs/part2-deck
 `docs/PART2-SPEAKER-NOTES.md` — what to say, Q&A, timing. Keep this on a
 second screen or printed; it is **not** embedded in the HTML deck.
 
-## Regenerate screenshots
+## Regenerate
 
-From repo root (needs Python 3 + Pillow; Chrome optional for dashboard mock):
-
+**PowerPoint:**
 ```bash
-python3 docs/part2-deck/build-deck.py
+docs/part2-deck/.venv/bin/python docs/part2-deck/build-pptx.py
+```
+
+**Screenshots + HTML:**
 ```
 
 This re-runs all demo commands, renders terminal PNGs, and rebuilds `index.html`.

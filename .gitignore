@@ -6,6 +6,7 @@ release/
 .tmp-render*/
 docs/part2-deck/captures/
 docs/part2-deck/assets/
+docs/part2-deck/.venv/
 .claude/telemetry/
 __pycache__/
 *.pyc

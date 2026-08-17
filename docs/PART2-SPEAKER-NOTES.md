@@ -1,7 +1,6 @@
 # Part 2 — Speaker Notes
 
-**Visual deck (screenshots only):** open `docs/part2-deck/index.html` in a browser.
-Use arrow keys or space to advance; `F` for fullscreen.
+**Visual deck:** `docs/part2-deck/Part2-Agentic-Development.pptx` (PowerPoint) or `docs/part2-deck/index.html` (browser)
 
 **Demo commands (if you run live instead of screenshots):** `docs/PART2-DEMO-MAP.md`
 
