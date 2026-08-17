@@ -1,5 +1,11 @@
 # Part 2 — Strategy Case Study: Talk Track
 
+> **Presentation files**
+> - **Visual deck (screenshots):** `docs/part2-deck/index.html` — open in browser, arrow keys to navigate
+> - **Speaker notes (separate):** `docs/PART2-SPEAKER-NOTES.md`
+> - **Live demo commands:** `docs/PART2-DEMO-MAP.md`
+> - **Regenerate deck:** `python3 docs/part2-deck/build-deck.py`
+
 Enabling agentic development across a SOX-regulated e-commerce engineering org.
 12 slides, 29 minutes of content, 15–20 minutes of Q&A after.
 

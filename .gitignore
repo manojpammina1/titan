@@ -4,6 +4,8 @@ dist-electron/
 release/
 .render/
 .tmp-render*/
+docs/part2-deck/captures/
+docs/part2-deck/assets/
 .claude/telemetry/
 __pycache__/
 *.pyc
