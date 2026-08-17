@@ -51,3 +51,4 @@ titan.config.json + governance/
 - Claude back-compat: `bash scripts/verify-claude-snapshot.sh`
 - Generic lint: `bash scripts/lint-generic.sh` (from `titan/` root)
 - Secret block demo: same `credential-scan.py` under Claude PreToolUse and git pre-commit
+- Windows path hygiene (flatten nest, retire `generic`, deploy to POC): `docs/PATH-CONSOLIDATION.md`

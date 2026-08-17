@@ -26,7 +26,7 @@ removed. See `docs/CONFIG-REFERENCE.md` for the full schema and
 | `dashboard/` | A local, JSONL-driven usage analytics dashboard for the toolkit maintainer. |
 | `tools/ota/` | Signed-manifest tooling for a future auto-update channel (dev/test keys only today — see `docs/HARNESS-UPDATE.md`). |
 | `fixtures/` | Config fixtures for the §G fidelity matrix. `titan.config.github-generic.json` (commerce/CIF off, GitHub) and `titan.config.commerce-shaped.json` (synthetic full AEM+commerce shape — fictional data only). A real reference `titan.config.ds.json` may exist locally but is gitignored and must never ship. |
-| `docs/` | This documentation set. |
+| `docs/` | This documentation set. Windows demo path consolidation (flatten nest, retire `generic`, `RCG_ROOT`): `docs/PATH-CONSOLIDATION.md`. |
 | `scripts/lint-generic.sh` | The de-branding completion gate — fails if any company-identity residue from the reference implementation this harness was extracted from is found anywhere outside `fixtures/**`. |
 
 ## Quickstart

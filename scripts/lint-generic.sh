@@ -3,7 +3,8 @@
 #
 # Fails (non-zero exit) if any company-identity residue from the reference
 # implementation this harness was extracted from is found anywhere under
-# C:\codebase\generic, with two intentional exceptions:
+# this titan repo root (authoritative path: C:\codebase\titan after flatten;
+# never scan the retired C:\codebase\generic tree), with two intentional exceptions:
 #   - fixtures/**   the real-reference-data fidelity oracle (gitignored, never
 #                    shipped — see fixtures/titan.config.ds.json's own
 #                    _description)

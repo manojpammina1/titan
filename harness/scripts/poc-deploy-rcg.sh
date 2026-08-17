@@ -1,32 +1,82 @@
 #!/usr/bin/env bash
-# poc-deploy-rcg.sh — deploy rendered Titan payloads to RCG POC root (T12.6).
+# poc-deploy-rcg.sh — deploy rendered Titan payloads to the RCG POC root (T12.6).
 #
-# Layout expected (preferred):
-#   $RCG_ROOT/
-#     titan/harness/scripts/poc-deploy-rcg.sh   ← this file
-#     titan.config.json                        ← optional config override
+# Harness is ALWAYS resolved from this script's location (never guessed), so a
+# double-nested checkout like C:\codebase\titan\titan cannot silently point
+# HARNESS at the wrong tree.
 #
-# Always resolve the harness from this script's location (not from a guessed
-# parent), so double-nested checkouts like codebase/titan/titan cannot silently
-# deploy into the wrong tree. Override the deploy root with RCG_ROOT=.
+# Deploy root (RCG_ROOT) resolution — in order:
+#   1. $RCG_ROOT if set (recommended on Windows: RCG_ROOT=/c/POC/RCG)
+#   2. Parent of the titan repo, ONLY if it looks like a real POC workspace
+#      (has CLAUDE.md / AGENTS.md / .claude / titan.config.json). A bare nest
+#      wrapper that only contains titan/ is rejected — that was the bug that
+#      deployed into C:\codebase\titan instead of C:\POC\RCG.
+#   3. Well-known demo path /c/POC/RCG or C:/POC/RCG if present and marked.
+#   4. Titan repo root itself, ONLY if it already has POC markers.
+#   5. Otherwise exit 1 with instructions.
 set -euo pipefail
 
 HARNESS="$(cd "$(dirname "$0")/.." && pwd)"
 TITAN_REPO="$(cd "$HARNESS/.." && pwd)"
 
+is_poc_root() {
+  local d="$1"
+  [ -n "$d" ] && [ -d "$d" ] || return 1
+  [ -f "$d/titan.config.json" ] || [ -f "$d/CLAUDE.md" ] || \
+    [ -f "$d/AGENTS.md" ] || [ -d "$d/.claude" ]
+}
+
+resolve_existing() {
+  local cand="$1"
+  [ -n "$cand" ] && [ -d "$cand" ] || return 1
+  (cd "$cand" && pwd)
+}
+
+RCG_ROOT_RESOLVED=""
 if [ -n "${RCG_ROOT:-}" ]; then
-  RCG_ROOT="$(cd "$RCG_ROOT" && pwd)"
+  RCG_ROOT_RESOLVED="$(resolve_existing "$RCG_ROOT")" || {
+    echo "FAIL: RCG_ROOT=$RCG_ROOT is not a directory" >&2
+    exit 1
+  }
 else
   PARENT="$(cd "$TITAN_REPO/.." && pwd)"
-  # Prefer parent-of-repo when it actually contains this titan checkout.
-  if [ -e "$PARENT/titan/harness/scripts/titan-render.py" ] || \
-     [ "$PARENT/titan" -ef "$TITAN_REPO" ] 2>/dev/null; then
-    RCG_ROOT="$PARENT"
+  if is_poc_root "$PARENT"; then
+    RCG_ROOT_RESOLVED="$PARENT"
   else
-    # Standalone titan clone — deploy into the repo root itself.
-    RCG_ROOT="$TITAN_REPO"
+    for cand in "/c/POC/RCG" "C:/POC/RCG" "/mnt/c/POC/RCG"; do
+      if resolved="$(resolve_existing "$cand")" && is_poc_root "$resolved"; then
+        RCG_ROOT_RESOLVED="$resolved"
+        break
+      fi
+    done
+  fi
+  if [ -z "$RCG_ROOT_RESOLVED" ] && is_poc_root "$TITAN_REPO"; then
+    RCG_ROOT_RESOLVED="$TITAN_REPO"
   fi
 fi
+
+if [ -z "$RCG_ROOT_RESOLVED" ]; then
+  cat >&2 <<EOF
+FAIL: cannot determine RCG POC deploy root.
+
+  Titan source : $TITAN_REPO
+  Parent       : $(cd "$TITAN_REPO/.." && pwd)
+  Parent looks like a nest wrapper (has titan/ but no POC markers), so it was
+  NOT chosen. That prevents deploying into C:\\codebase\\titan by accident.
+
+Set the POC workspace explicitly, then re-run:
+
+  export RCG_ROOT=/c/POC/RCG          # Git Bash / MSYS
+  # or:  set RCG_ROOT=C:\\POC\\RCG    # cmd.exe
+  bash $HARNESS/scripts/poc-deploy-rcg.sh
+
+A valid RCG_ROOT contains at least one of: titan.config.json, CLAUDE.md,
+AGENTS.md, or .claude/
+EOF
+  exit 1
+fi
+
+RCG_ROOT="$RCG_ROOT_RESOLVED"
 
 CONFIG="${1:-}"
 if [ -z "$CONFIG" ]; then
