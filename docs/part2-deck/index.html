@@ -72,6 +72,37 @@
   }
   .title-byline { font-size: 14px; color: var(--muted); }
 
+  /* ── closing slide ── */
+  .slide--close {
+    align-items: center; justify-content: center;
+    background: linear-gradient(110deg, #fff 0%, var(--sky) 100%);
+  }
+  .slide--close::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--coral), var(--ocean-mid));
+  }
+  .close-hero {
+    text-align: center; max-width: 820px; padding: 56px 48px 48px;
+    background: linear-gradient(15deg, rgba(0,95,140,.06), rgba(0,150,199,.04));
+    border-radius: 20px; border: 1px solid var(--border);
+    box-shadow: 0 12px 48px rgba(0,95,140,.08);
+    position: relative; z-index: 1;
+  }
+  .close-hero h1 {
+    font-size: clamp(42px, 5.5vw, 64px); color: var(--ink);
+    line-height: 1.1; margin-bottom: 12px;
+  }
+  .close-questions {
+    font-size: clamp(26px, 3.2vw, 36px); color: var(--ocean-deep);
+    font-weight: 700; margin-bottom: 28px;
+  }
+  .close-line {
+    width: 72px; height: 3px; margin: 0 auto 24px;
+    background: linear-gradient(90deg, var(--coral), var(--ocean-mid));
+    border-radius: 999px;
+  }
+  .close-byline { font-size: 16px; color: var(--muted); line-height: 1.5; }
+
   /* ── content slides ── */
   .slide--content { padding: 0; }
   .top-accent {
@@ -486,6 +517,17 @@
     </div>
   </div>
   <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 13 — Thank you / Questions -->
+<section class="slide slide--close" id="slide-13" data-index="13">
+  <div class="wave-band"></div>
+  <div class="close-hero">
+    <h1>Thank you</h1>
+    <div class="close-line"></div>
+    <p class="close-questions">Questions?</p>
+    <p class="close-byline">Royal Caribbean Group · Manoj Pammina<br/>Part 2 · Agentic Development Strategy</p>
+  </div>
 </section>
 
 </div>
