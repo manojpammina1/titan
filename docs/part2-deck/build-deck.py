@@ -628,7 +628,7 @@ def main() -> int:
     SHOTS.mkdir(parents=True, exist_ok=True)
     capture_all()
     print("Building index.html…")
-    build_html()
+    print("  (skipped — index.html is maintained in sync with Part2-Agentic-Development.pptx)")
     print(f"Done.\n  Deck:    {DECK / 'index.html'}\n  Shots:   {SHOTS}/\n  Notes:   {ROOT / 'docs/PART2-SPEAKER-NOTES.md'}")
     return 0
 

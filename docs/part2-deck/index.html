@@ -3,173 +3,499 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Part 2 — Agentic Development Strategy</title>
+<title>Part 2 — Enabling Agentic Development</title>
 <style>
   :root {
-    --bg: #eef6fc; --card: #ffffff; --text: #0a3d5c; --muted: #64748b;
-    --accent: #0096c7; --border: #cbe8f5; --header: linear-gradient(90deg, #005f8c, #0096c7);
+    --ocean-deep: #005f8c;
+    --ocean-mid: #0096c7;
+    --ocean-light: #90e0ef;
+    --sky: #eef6fc;
+    --paper: #ffffff;
+    --ink: #0a3d5c;
+    --body: #334155;
+    --muted: #64748b;
+    --coral: #ff7a45;
+    --border: #cbe8f5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: linear-gradient(135deg, #ffffff 0%, #eef6fc 55%, #e8f4fc 100%);
-    color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow: hidden; }
+  html, body {
+    height: 100%;
+    background: linear-gradient(135deg, #ffffff 0%, var(--sky) 55%, #e8f4fc 100%);
+    color: var(--ink);
+    font-family: Calibri, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow: hidden;
+  }
   .deck { height: 100vh; width: 100vw; position: relative; }
-  .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    padding: 32px 40px; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    opacity: 0; pointer-events: none;
+    transition: opacity .35s ease;
+  }
   .slide.active { opacity: 1; pointer-events: auto; }
-  .slide-inner { display: grid; grid-template-columns: 38% 62%; gap: 28px; width: min(1440px, 100%); height: min(820px, 92vh); }
-  .copy { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px 32px;
-    display: flex; flex-direction: column; justify-content: center; box-shadow: 0 8px 32px rgba(0,95,140,.08); }
-  .num { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 12px; }
-  h1 { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.2; margin-bottom: 20px; color: #005f8c; }
-  ul { list-style: none; }
-  li { position: relative; padding-left: 18px; margin-bottom: 14px; font-size: clamp(14px, 1.35vw, 17px);
-    line-height: 1.45; color: #334155; }
-  li::before { content: ''; position: absolute; left: 0; top: .55em; width: 7px; height: 7px;
-    border-radius: 50%; background: var(--accent); }
-  .visuals { display: flex; flex-direction: column; gap: 12px; justify-content: center; min-height: 0; }
-  .shot { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
-  .shot img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;
-    border: 1px solid var(--border); box-shadow: 0 8px 28px rgba(0,95,140,.12); background: #fff; }
-  .hud { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,.92);
-    border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 13px; color: var(--muted);
-    display: flex; gap: 16px; align-items: center; z-index: 10; backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-  .hud kbd { background: #1e293b; border-radius: 4px; padding: 2px 6px; color: #e2e8f0; font-size: 11px; }
-  .title-card { position: fixed; top: 18px; left: 24px; font-size: 13px; color: var(--muted); z-index: 10; }
+
+  /* ── title slide ── */
+  .slide--title {
+    align-items: center; justify-content: center;
+    background: linear-gradient(110deg, #fff 0%, var(--sky) 100%);
+  }
+  .slide--title::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, var(--coral), var(--ocean-mid));
+  }
+  .title-hero {
+    text-align: center; max-width: 900px; padding: 40px;
+    background: linear-gradient(15deg, rgba(0,95,140,.06), rgba(0,150,199,.04));
+    border-radius: 20px; border: 1px solid var(--border);
+    box-shadow: 0 12px 48px rgba(0,95,140,.08);
+  }
+  .title-eyebrow {
+    font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ocean-mid); font-weight: 700; margin-bottom: 16px;
+  }
+  .title-hero h1 {
+    font-size: clamp(36px, 4.5vw, 52px); color: var(--ink);
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .title-sub {
+    font-size: clamp(18px, 2vw, 24px); color: var(--ocean-deep);
+    margin-bottom: 28px; line-height: 1.4;
+  }
+  .title-tags {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    margin-bottom: 24px;
+  }
+  .title-tag {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 16px;
+    font-size: 14px; color: var(--body); font-weight: 600;
+  }
+  .title-byline { font-size: 14px; color: var(--muted); }
+
+  /* ── content slides ── */
+  .slide--content { padding: 0; }
+  .top-accent {
+    height: 5px; flex-shrink: 0;
+    background: linear-gradient(90deg, var(--coral), var(--ocean-mid));
+  }
+  .header-bar {
+    flex-shrink: 0;
+    background: linear-gradient(90deg, var(--ocean-deep), var(--ocean-mid));
+    padding: 14px 28px 14px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .header-bar h1 {
+    font-size: clamp(20px, 2.2vw, 28px); color: #fff; font-weight: 700; line-height: 1.2;
+  }
+  .slide-badge {
+    flex-shrink: 0;
+    background: rgba(255,255,255,.18);
+    border-radius: 8px; padding: 4px 12px;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .slide-body {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 34% 66%;
+    gap: 0; padding: 20px 24px 12px;
+  }
+  .copy-panel {
+    padding: 8px 20px 8px 8px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .bullets { list-style: none; }
+  .bullets li {
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-bottom: 18px;
+    font-size: clamp(14px, 1.35vw, 16px);
+    line-height: 1.45; color: var(--body);
+  }
+  .bullets .idx {
+    flex-shrink: 0; font-size: 13px; font-weight: 700;
+    color: var(--ocean-mid); min-width: 24px;
+  }
+  .visuals-panel {
+    display: flex; flex-direction: column; gap: 10px;
+    justify-content: center; min-height: 0; padding-left: 8px;
+  }
+  .shot-wrap {
+    flex: 1; min-height: 0; position: relative;
+    display: flex; flex-direction: column;
+  }
+  .shot-wrap--half { flex: 1; }
+  .live-label {
+    position: absolute; top: 10px; right: 12px; z-index: 2;
+    background: rgba(0,95,140,.88); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: .08em;
+    padding: 4px 10px; border-radius: 6px;
+  }
+  .shot-wrap img {
+    width: 100%; height: 100%; object-fit: contain;
+    border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--paper);
+    box-shadow: 0 8px 28px rgba(0,95,140,.12);
+  }
+  .slide-footer {
+    flex-shrink: 0; padding: 6px 32px 14px;
+    font-size: 11px; color: var(--muted);
+  }
+  .wave-band {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(0deg, rgba(144,224,239,.25), transparent);
+    pointer-events: none; z-index: 0;
+  }
+  .slide--content > * { position: relative; z-index: 1; }
+
+  .hud {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    background: rgba(255,255,255,.94); border: 1px solid var(--border);
+    border-radius: 999px; padding: 8px 18px; font-size: 13px; color: var(--muted);
+    display: flex; gap: 16px; align-items: center; z-index: 100;
+    backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,.06);
+  }
+  .hud kbd {
+    background: var(--ocean-deep); border-radius: 4px;
+    padding: 2px 6px; color: #fff; font-size: 11px;
+  }
   @media (max-width: 960px) {
-    .slide-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: auto; max-height: 92vh; overflow: auto; }
+    .slide-body { grid-template-columns: 1fr; overflow-y: auto; }
+    .visuals-panel { min-height: 280px; }
   }
 </style>
 </head>
 <body>
-<div class="title-card">RCG Principal Engineer · Part 2 · Agentic Development</div>
 <div class="deck" id="deck">
 
-<section class="slide" id="slide-1" data-index="0">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 1 / 12</div>
-      <h1>Thesis — agents are untrusted workers</h1>
-      <ul><li>Model interprets; deterministic tools own every commerce value</li><li>Nothing touches money, inventory, or controls without human authority</li><li>Assumption: existing React/AEM/GraphQL/AWS + SOX process stays</li></ul>
+<!-- Slide 0 — Title -->
+<section class="slide slide--title active" id="slide-0" data-index="0">
+  <div class="wave-band"></div>
+  <div class="title-hero">
+    <p class="title-eyebrow">Principal Engineer Case Study</p>
+    <h1>Enabling Agentic Development</h1>
+    <p class="title-sub">30 / 60 / 90 roadmap for a SOX-regulated e-commerce engineering org</p>
+    <div class="title-tags">
+      <span class="title-tag">12 slides</span>
+      <span class="title-tag">Live demo</span>
+      <span class="title-tag">SOX evidence gate</span>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-01-cruise-plan.png" alt="Slide 1 screenshot"/></figure></div>
+    <p class="title-byline">Royal Caribbean Group · Manoj Pammina</p>
   </div>
 </section>
-<section class="slide" id="slide-2" data-index="1">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 2 / 12</div>
-      <h1>Why now — govern or explain in an audit</h1>
-      <ul><li>Assistants are already in use — uneven skill, no shared record</li><li>Shadow AI is a compliance risk before it is a quality risk</li><li>First 30 days buy control and a baseline, not raw velocity</li></ul>
-    </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-02-credential-block.png" alt="Slide 2 screenshot"/></figure></div>
+
+<!-- Slide 1 — Thesis -->
+<section class="slide slide--content" id="slide-1" data-index="1">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Thesis — agents are untrusted workers</h1>
+    <span class="slide-badge">1 / 12</span>
   </div>
-</section>
-<section class="slide" id="slide-3" data-index="2">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 3 / 12</div>
-      <h1>Tooling standard — policy layer, not editor mandate</h1>
-      <ul><li>Floor: one sanctioned assistant under enterprise agreement</li><li>Overlay: same protected paths, scans, telemetry on every agent</li><li>Runtime: model gateway on AWS — no vendor keys in apps</li></ul>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Model interprets; deterministic tools own every commerce value</span></li>
+        <li><span class="idx">02</span><span>Nothing touches money, inventory, or controls without human authority</span></li>
+        <li><span class="idx">03</span><span>Assumption: existing React/AEM/GraphQL/AWS + SOX process stays</span></li>
+      </ol>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-03-enforcement-matrix.png" alt="Slide 3 screenshot"/></figure></div>
-  </div>
-</section>
-<section class="slide" id="slide-4" data-index="3">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 4 / 12</div>
-      <h1>30 / 60 / 90 — three pillars in parallel</h1>
-      <ul><li>Each horizon moves adoption, SDLC, and product together</li><li>Explicit exit gate at every boundary — evidence or kill</li><li>Pick one enthusiastic team and one skeptical team on purpose</li></ul>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-01-cruise-plan.png" alt="Cruise plan hero — pricing_tool evidence"/>
+      </div>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-04-roadmap.png" alt="Slide 4 screenshot"/></figure><figure class="shot"><img src="screenshots/slide-04-deploy.png" alt="Slide 4 screenshot"/></figure></div>
   </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
 </section>
-<section class="slide" id="slide-5" data-index="4">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 5 / 12</div>
-      <h1>SDLC — what AI may and may not do</h1>
-      <ul><li>AI may draft; it may not approve, merge, deploy, or take payment</li><li>Review: specialist first pass + adversarial verification</li><li>Human accountable at every gate — especially in SOX scope</li></ul>
+
+<!-- Slide 2 — Why now -->
+<section class="slide slide--content" id="slide-2" data-index="2">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Why now — govern or explain in an audit</h1>
+    <span class="slide-badge">2 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Assistants are already in use — uneven skill, no shared record</span></li>
+        <li><span class="idx">02</span><span>Shadow AI is a compliance risk before it is a quality risk</span></li>
+        <li><span class="idx">03</span><span>First 30 days buy control and a baseline, not raw velocity</span></li>
+      </ol>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-05-answer-cache.png" alt="Slide 5 screenshot"/></figure></div>
-  </div>
-</section>
-<section class="slide" id="slide-6" data-index="5">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 6 / 12</div>
-      <h1>Safety, SOX, IP — live control</h1>
-      <ul><li>One protected-paths.json → pre-commit block + CI evidence</li><li>Preventive: hook rejects revenue-relevant commit</li><li>Detective: sox-evidence.py catches --no-verify · SCM + CI = system of record</li></ul>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-02-credential-block.png" alt="Credential scan block"/>
+      </div>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-06-sox-evidence.png" alt="Slide 6 screenshot"/></figure></div>
   </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
 </section>
-<section class="slide" id="slide-7" data-index="6">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 7 / 12</div>
-      <h1>Measurement — refuse to fake a number</h1>
-      <ul><li>Adoption + rework ratio + cost per merged PR — not self-reported speedup</li><li>Safety panel: not instrumented — enforcement real, telemetry pending</li><li>Guest agent: binary gates — zero hallucinated prices, no oversell</li></ul>
+
+<!-- Slide 3 — Tooling -->
+<section class="slide slide--content" id="slide-3" data-index="3">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Tooling standard — policy layer, not editor mandate</h1>
+    <span class="slide-badge">3 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Floor: one sanctioned assistant under enterprise agreement</span></li>
+        <li><span class="idx">02</span><span>Overlay: same protected paths, scans, telemetry on every agent</span></li>
+        <li><span class="idx">03</span><span>Runtime: model gateway on AWS — no vendor keys in apps</span></li>
+      </ol>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-07-titan-dashboard.png" alt="Slide 7 screenshot"/></figure><figure class="shot"><img src="screenshots/slide-07-vitest.png" alt="Slide 7 screenshot"/></figure></div>
-  </div>
-</section>
-<section class="slide" id="slide-8" data-index="7">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 8 / 12</div>
-      <h1>Worked example — cruise planner architecture</h1>
-      <ul><li>Orchestration layer, not a chatbot — typed tool schemas</li><li>Evidence objects carry price, availability, validity window</li><li>Auth at commitment boundary; checkout owns payment</li></ul>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-03-enforcement-matrix.png" alt="Enforcement matrix — 3 agents"/>
+      </div>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-08-architecture.png" alt="Slide 8 screenshot"/></figure></div>
   </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
 </section>
-<section class="slide" id="slide-9" data-index="8">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 9 / 12</div>
-      <h1>Evaluate and operate — gate, not report</h1>
-      <ul><li>10 golden + 8 red-team cases — non-zero exit blocks merge</li><li>Model off → same options (degraded, not down)</li><li>Concurrent holds cannot oversell finite inventory</li></ul>
+
+<!-- Slide 4 — 30/60/90 -->
+<section class="slide slide--content" id="slide-4" data-index="4">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>30 / 60 / 90 — three pillars in parallel</h1>
+    <span class="slide-badge">4 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Each horizon moves adoption, SDLC, and product together</span></li>
+        <li><span class="idx">02</span><span>Explicit exit gate at every boundary — evidence or kill</span></li>
+        <li><span class="idx">03</span><span>Pick one enthusiastic team and one skeptical team on purpose</span></li>
+      </ol>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-09-eval-gate.png" alt="Slide 9 screenshot"/></figure></div>
-  </div>
-</section>
-<section class="slide" id="slide-10" data-index="9">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 10 / 12</div>
-      <h1>Enablement — policy and pairing</h1>
-      <ul><li>Champions pair with skeptics; skeptics own guardrails</li><li>EMs get leadership view — is the investment sticking?</li><li>Open with blocked secrets and rework cost, not a model bake-off</li></ul>
+    <div class="visuals-panel">
+      <div class="shot-wrap shot-wrap--half">
+        <span class="live-label">LIVE OUTPUT — 1/2</span>
+        <img src="screenshots/slide-04-roadmap.png" alt="30/60/90 roadmap"/>
+      </div>
+      <div class="shot-wrap shot-wrap--half">
+        <span class="live-label">LIVE OUTPUT — 2/2</span>
+        <img src="screenshots/slide-04-deploy.png" alt="deploy-harness.sh output"/>
+      </div>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-10-enablement.png" alt="Slide 10 screenshot"/></figure></div>
   </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
 </section>
-<section class="slide" id="slide-11" data-index="10">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 11 / 12</div>
-      <h1>Risks and kill criteria</h1>
-      <ul><li>Pause expansion if change-fail rises, secret leaks, review degrades</li><li>Kill guest feature if eval fails, hold oversells, or cost cap blown</li><li>Trade-off: slower first 30 days for an audit trail you can defend</li></ul>
+
+<!-- Slide 5 — SDLC -->
+<section class="slide slide--content" id="slide-5" data-index="5">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>SDLC — what AI may and may not do</h1>
+    <span class="slide-badge">5 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>AI may draft; it may not approve, merge, deploy, or take payment</span></li>
+        <li><span class="idx">02</span><span>Review: specialist first pass + adversarial verification</span></li>
+        <li><span class="idx">03</span><span>Human accountable at every gate — especially in SOX scope</span></li>
+      </ol>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-11-kill-criteria.png" alt="Slide 11 screenshot"/></figure></div>
-  </div>
-</section>
-<section class="slide" id="slide-12" data-index="11">
-  <div class="slide-inner">
-    <div class="copy">
-      <div class="num">Slide 12 / 12</div>
-      <h1>The ask</h1>
-      <ul><li>Pilot mandate · Security/Legal/Audit time · Day-90 decision forum</li><li>Transferable asset: operating model, not the cruise planner</li></ul>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-05-answer-cache.png" alt="answer-cache ?gov zero tokens"/>
+      </div>
     </div>
-    <div class="visuals"><figure class="shot"><img src="screenshots/slide-12-ask.png" alt="Slide 12 screenshot"/></figure></div>
   </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
 </section>
+
+<!-- Slide 6 — SOX -->
+<section class="slide slide--content" id="slide-6" data-index="6">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Safety, SOX, IP — live control</h1>
+    <span class="slide-badge">6 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>One protected-paths.json → pre-commit block + CI evidence</span></li>
+        <li><span class="idx">02</span><span>Preventive: hook rejects revenue-relevant commit</span></li>
+        <li><span class="idx">03</span><span>Detective: sox-evidence.py catches --no-verify · SCM + CI = system of record</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-06-sox-evidence.png" alt="SOX evidence gate NO-GO"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 7 — Measurement -->
+<section class="slide slide--content" id="slide-7" data-index="7">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Measurement — refuse to fake a number</h1>
+    <span class="slide-badge">7 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Adoption + rework ratio + cost per merged PR — not self-reported speedup</span></li>
+        <li><span class="idx">02</span><span>Safety panel: not instrumented — enforcement real, telemetry pending</span></li>
+        <li><span class="idx">03</span><span>Guest agent: binary gates — zero hallucinated prices, no oversell</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap shot-wrap--half">
+        <span class="live-label">LIVE OUTPUT — 1/2</span>
+        <img src="screenshots/slide-07-titan-dashboard.png" alt="Titan dashboard — not instrumented"/>
+      </div>
+      <div class="shot-wrap shot-wrap--half">
+        <span class="live-label">LIVE OUTPUT — 2/2</span>
+        <img src="screenshots/slide-07-vitest.png" alt="vitest 15 passed"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 8 — Architecture -->
+<section class="slide slide--content" id="slide-8" data-index="8">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Worked example — cruise planner architecture</h1>
+    <span class="slide-badge">8 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Orchestration layer, not a chatbot — typed tool schemas</span></li>
+        <li><span class="idx">02</span><span>Evidence objects carry price, availability, validity window</span></li>
+        <li><span class="idx">03</span><span>Auth at commitment boundary; checkout owns payment</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-08-architecture.png" alt="compare + injection stripped"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 9 — Eval -->
+<section class="slide slide--content" id="slide-9" data-index="9">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Evaluate and operate — gate, not report</h1>
+    <span class="slide-badge">9 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>10 golden + 8 red-team cases — non-zero exit blocks merge</span></li>
+        <li><span class="idx">02</span><span>Model off → same options (degraded, not down)</span></li>
+        <li><span class="idx">03</span><span>Concurrent holds cannot oversell finite inventory</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-09-eval-gate.png" alt="18-case eval gate GO"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 10 — Enablement -->
+<section class="slide slide--content" id="slide-10" data-index="10">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Enablement — policy and pairing</h1>
+    <span class="slide-badge">10 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Champions pair with skeptics; skeptics own guardrails</span></li>
+        <li><span class="idx">02</span><span>EMs get leadership view — is the investment sticking?</span></li>
+        <li><span class="idx">03</span><span>Open with blocked secrets and rework cost, not a model bake-off</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-10-enablement.png" alt="sox-evidence fails this repo"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 11 — Risks -->
+<section class="slide slide--content" id="slide-11" data-index="11">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>Risks and kill criteria</h1>
+    <span class="slide-badge">11 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Pause expansion if change-fail rises, secret leaks, review degrades</span></li>
+        <li><span class="idx">02</span><span>Kill guest feature if eval fails, hold oversells, or cost cap blown</span></li>
+        <li><span class="idx">03</span><span>Trade-off: slower first 30 days for an audit trail you can defend</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-11-kill-criteria.png" alt="refusal + gate exit code"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
+<!-- Slide 12 — The ask -->
+<section class="slide slide--content" id="slide-12" data-index="12">
+  <div class="top-accent"></div>
+  <div class="header-bar">
+    <h1>The ask</h1>
+    <span class="slide-badge">12 / 12</span>
+  </div>
+  <div class="slide-body">
+    <div class="copy-panel">
+      <ol class="bullets">
+        <li><span class="idx">01</span><span>Pilot mandate · Security/Legal/Audit time · Day-90 decision forum</span></li>
+        <li><span class="idx">02</span><span>Transferable asset: operating model, not the cruise planner</span></li>
+      </ol>
+    </div>
+    <div class="visuals-panel">
+      <div class="shot-wrap">
+        <span class="live-label">LIVE OUTPUT</span>
+        <img src="screenshots/slide-12-ask.png" alt="Three asks"/>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">RCG Principal Engineer · Part 2 · Agentic Development Strategy</div>
+</section>
+
 </div>
+
 <div class="hud">
-  <span id="counter">1 / 12</span>
+  <span id="counter">1 / 13</span>
   <span><kbd>←</kbd> <kbd>→</kbd> navigate</span>
   <span><kbd>F</kbd> fullscreen</span>
 </div>
+
 <script>
 const slides = [...document.querySelectorAll('.slide')];
 let idx = 0;
@@ -177,7 +503,8 @@ function show(i) {
   idx = Math.max(0, Math.min(slides.length - 1, i));
   slides.forEach((s, n) => s.classList.toggle('active', n === idx));
   document.getElementById('counter').textContent = (idx + 1) + ' / ' + slides.length;
-  history.replaceState(null, '', '#slide-' + (idx + 1));
+  const id = slides[idx].id.replace('slide-', '');
+  history.replaceState(null, '', '#slide-' + id);
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
@@ -190,7 +517,7 @@ document.addEventListener('keydown', e => {
   }
 });
 const m = location.hash.match(/slide-(\d+)/);
-show(m ? parseInt(m[1], 10) - 1 : 0);
+show(m ? parseInt(m[1], 10) : 0);
 </script>
 </body>
 </html>
