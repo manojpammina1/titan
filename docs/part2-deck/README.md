@@ -20,10 +20,11 @@ on slides** — speaker notes live separately.
 open docs/part2-deck/Part2-Agentic-Development.pptx
 ```
 
-**Browser:**
-# or
+**Browser (matches PPT — 13 slides):**
+```bash
+open docs/part2-deck/index.html
+# or serve locally:
 python3 -m http.server 8765 --directory docs/part2-deck
-# then visit http://localhost:8765
 ```
 
 ## Speaker notes
