@@ -9,7 +9,8 @@ import { useWizard } from '../store/wizard-state';
 //   - On a successful test, the PAT is sealed into Windows Credential
 //     Manager via window.api.token.storeAdo(). Plaintext leaves React's
 //     state on next render and lives only in the OS keystore.
-//   - "Continue" is blocked until the test passes.
+//   - "Continue" requires a passing test; "Skip & Continue" is always available
+//     (repos can be cloned later from the Dashboard).
 
 export default function AdoPat(): JSX.Element {
   const savedPat        = useWizard((s) => s.adoPatValue);  // restore on Back nav
@@ -85,7 +86,13 @@ export default function AdoPat(): JSX.Element {
     setTesting(false);
   };
 
-  const advance = (): void => setScreen(nextScreen());
+  const advance = (): void => {
+    if (lastTestOk !== true) {
+      setAdoPatValue('');
+      setAdoPatStored(false);
+    }
+    setScreen(nextScreen());
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -153,8 +160,8 @@ export default function AdoPat(): JSX.Element {
       </p>
 
       <div className="flex justify-center">
-        <Button size="lg" onClick={advance} disabled={lastTestOk !== true}>
-          Continue
+        <Button size="lg" onClick={advance}>
+          {lastTestOk === true ? 'Continue' : 'Skip & Continue'}
         </Button>
       </div>
     </div>
